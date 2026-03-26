@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YumYard | Premium Food</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* --- CREATIVE CSS START --- */
+        :root {
+            --primary: #e63946;
+            --dark: #1d3557;
+            --light-bg: #f8f9fa;
+            --glass: rgba(255, 255, 255, 0.8);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            background: #f1f2f6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        /* Navbar Styling */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 30px rgba(0,0,0,0.05);
+        }
+
+        .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .nav-links button {
+            background: none; border: none;
+            margin: 0 15px; font-weight: 600; cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .nav-links button:hover { color: var(--primary); }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 8%;
+            background: white;
+            border-radius: 0 0 80px 80px;
+            margin-bottom: 50px;
+        }
+
+        .hero-text h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4.5rem;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .hero-text p { color: #666; font-size: 1.2rem; margin: 20px 0; }
+
+        .btn-main {
+            background: var(--primary);
+            color: white;
+            padding: 15px 40px;
+            border-radius: 50px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(230, 57, 70, 0.3);
+            transition: 0.3s;
+        }
+
+        .btn-main:hover { transform: scale(1.05); }
+
+        .hero-img img {
+            width: 450px;
+            filter: drop-shadow(0 20px 50px rgba(0,0,0,0.2));
+            animation: float 4s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Menu Grid */
+        .container { padding: 0 8%; }
+        .section-title { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 30px; }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        .food-card {
+            background: white;
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.05);
+            transition: 0.4s;
+            position: relative;
+        }
+
+        .food-card:hover { transform: translateY(-15px); box-shadow: 0 25px 50px rgba(0,0,0,0.1); }
+
+        .food-card img { width: 100%; height: 220px; object-fit: cover; }
+
+        .food-info { padding: 25px; }
+        .food-info h4 { margin: 0; font-size: 1.4rem; }
+        .tag { font-size: 0.8rem; background: #eee; padding: 4px 10px; border-radius: 10px; }
+        .veg { color: green; border: 1px solid green; }
+        .non-veg { color: red; border: 1px solid red; }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .price { font-size: 1.5rem; font-weight: bold; color: var(--dark); }
+        .add-btn {
+            background: var(--dark);
+            color: white;
+            width: 40px; height: 40px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* --- CREATIVE CSS END --- */
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="brand">YumYard</div>
+        <div class="nav-links">
+            <button>Menu</button>
+            <button>Orders</button>
+            <button style="color:var(--primary)">Cart (0)</button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-text">
+            <span style="color: var(--primary); font-weight: bold;">New Opening!</span>
+            <h1>Authentic Flavors <br> Delivered Home.</h1>
+            <p>Experience the finest dining from the comfort of your couch.</p>
+            <button class="btn-main">Order Now</button>
+        </div>
+        <div class="hero-img">
+            <img src="https://www.pngarts.com/files/3/Pasta-PNG-Background-Image.png" alt="Pasta">
+        </div>
+    </section>
+
+    <div class="container">
+        <h2 class="section-title">Chef's Special</h2>
+        <div class="menu-grid" id="menu-box">
+            </div>
+    </div>
+
+    <script>
+        const menuItems = [
+            { id: 1, name: "Premium Veg Thali", price: 350, type: "veg", img: "https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=500" },
+            { id: 2, name: "Matar Paneer Special", price: 280, type: "veg", img: "https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=500" },
+            { id: 3, name: "Butter Chicken Curry", price: 380, type: "non-veg", img: "https://images.unsplash.com/photo-1603894584114-7030af0bc380?w=500" },
+            { id: 4, name: "Stuffed Paneer Pupusas", price: 180, type: "veg", img: "https://images.unsplash.com/photo-1542834759-409605370494?w=500" },
+            { id: 5, name: "Margherita Pizza", price: 299, type: "veg", img: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?w=500" },
+            { id: 6, name: "Hakka Noodles", price: 220, type: "veg", img: "https://images.unsplash.com/photo-1585032226651-759b368d7246?w=500" }
+        ];
+
+        const container = document.getElementById('menu-box');
+        container.innerHTML = menuItems.map(item => `
+            <div class="food-card">
+                <img src="${item.img}" alt="${item.name}">
+                <div class="food-info">
+                    <span class="tag ${item.type}">${item.type.toUpperCase()}</span>
+                    <h4>${item.name}</h4>
+                    <div class="price-row">
+                        <span class="price">₹${item.price}</span>
+                        <button class="add-btn">+</button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    </script>
+</body>
+</html>

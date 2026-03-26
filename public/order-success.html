@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Placed | SmartKart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            /* Dynamic Background Gradient */
+            background: linear-gradient(-45deg, #fff5f5, #f0f4ff, #f5fff9, #fffdf0);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            overflow: hidden;
+            position: relative;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Colourful Floating Food & Herbs --- */
+        .floating-dish {
+            position: absolute;
+            opacity: 0.8;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.1));
+            animation: floatAround 8s infinite ease-in-out;
+            z-index: 1;
+            user-select: none;
+        }
+
+        /* Custom Positions & Colors */
+        .dish-1 { top: 10%; left: 8%; font-size: 65px; animation-delay: 0s; } /* Pizza */
+        .dish-2 { top: 15%; right: 10%; font-size: 55px; animation-delay: 2s; } /* Drink */
+        .dish-3 { bottom: 20%; left: 12%; font-size: 45px; animation-delay: 4s; } /* Herbs */
+        .dish-4 { bottom: 15%; right: 15%; font-size: 60px; animation-delay: 1s; } /* Burger/Cake */
+        .dish-5 { top: 40%; left: 5%; font-size: 40px; animation-delay: 3s; opacity: 0.5; } /* Leaf */
+        .dish-6 { top: 50%; right: 5%; font-size: 50px; animation-delay: 5s; } /* Coffee */
+
+        @keyframes floatAround {
+            0%, 100% { transform: translate(0, 0) rotate(0deg) scale(1); }
+            33% { transform: translate(30px, -50px) rotate(20deg) scale(1.1); }
+            66% { transform: translate(-20px, 20px) rotate(-15deg) scale(0.9); }
+        }
+
+        .success-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 60px 40px;
+            border-radius: 40px;
+            text-align: center;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.12);
+            max-width: 480px;
+            width: 90%;
+            z-index: 10;
+            border: 1px solid rgba(255,255,255,0.6);
+            transform: scale(0);
+            animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        @keyframes popIn { to { transform: scale(1); } }
+
+        .icon-box {
+            width: 100px; height: 100px;
+            background: linear-gradient(135deg, #4bb543, #2d6a4f);
+            border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            margin: 0 auto 30px;
+            box-shadow: 0 20px 40px rgba(75, 181, 67, 0.4);
+        }
+
+        .checkmark { color: white; font-size: 55px; font-weight: bold; }
+
+        h1 { color: #1d3557; font-size: 32px; margin-bottom: 15px; letter-spacing: -1px; }
+        p { color: #555; line-height: 1.6; margin-bottom: 35px; font-size: 17px; }
+
+        .btn-back {
+            display: inline-block;
+            background: #e63946;
+            color: white;
+            padding: 18px 45px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: 0.4s;
+            box-shadow: 0 15px 35px rgba(230, 57, 70, 0.3);
+        }
+        .btn-back:hover { 
+            background: #1d3557; 
+            transform: translateY(-8px) scale(1.05); 
+            box-shadow: 0 20px 45px rgba(29, 53, 87, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="floating-dish dish-1">🍕</div>
+    <div class="floating-dish dish-2">🍹</div>
+    <div class="floating-dish dish-3">🌿</div>
+    <div class="floating-dish dish-4">🍰</div>
+    <div class="floating-dish dish-5">🍃</div>
+    <div class="floating-dish dish-6">☕</div>
+
+    <div class="success-card">
+        <div class="icon-box">
+            <span class="checkmark">✓</span>
+        </div>
+        <h1>Woohoo! Order Placed</h1>
+        <p>Your <strong>SmartKart</strong> feast is being prepared with love. It'll reach you faster than you can say "Yum!" 😋</p>
+        <a href="dashboard.html" class="btn-back">Order More Food</a>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // High-density Confetti for "Colourful" feel
+            const end = Date.now() + (2 * 1000);
+            const colors = ['#e63946', '#4bb543', '#ffbe0b', '#3a86ff', '#8338ec'];
+
+            (function frame() {
+              confetti({
+                particleCount: 4,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: colors
+              });
+              confetti({
+                particleCount: 4,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: colors
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        };
+    </script>
+</body>
+</html>

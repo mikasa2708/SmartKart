@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Checkout | YumYard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #e63946;
+            --dark: #1d3557;
+            --glass: rgba(255, 255, 255, 0.85);
+            --gradient: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: #f1f4f9;
+            background-image: radial-gradient(#e6394622 1px, transparent 1px);
+            background-size: 30px 30px;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: var(--dark);
+        }
+
+        .checkout-wrapper {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            width: 90%;
+            max-width: 480px;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.5);
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 { text-align: center; font-weight: 600; letter-spacing: -1px; margin-bottom: 30px; }
+
+        /* Floating Bill Card */
+        .bill-card {
+            background: var(--dark);
+            color: white;
+            padding: 25px;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .bill-card::after {
+            content: ''; position: absolute; top: -50%; right: -50%;
+            width: 150px; height: 150px; background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+
+        .bill-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; opacity: 0.9; }
+        .total-row { 
+            display: flex; justify-content: space-between; 
+            margin-top: 15px; padding-top: 15px; 
+            border-top: 1px solid rgba(255,255,255,0.2); 
+            font-size: 22px; font-weight: 600; color: #ffb4b9;
+        }
+
+        /* Interactive Payment Options */
+        .payment-methods { display: grid; gap: 15px; margin-bottom: 35px; }
+        
+        .method-card {
+            background: white;
+            padding: 18px;
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .method-card:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+
+        input[type="radio"] { display: none; }
+        input[type="radio"]:checked + .method-card {
+            border-color: var(--primary);
+            background: #fff5f6;
+        }
+
+        .icon-circle {
+            width: 45px; height: 45px; background: #f0f2f5;
+            border-radius: 12px; display: flex; align-items: center;
+            justify-content: center; margin-right: 15px; font-size: 20px;
+        }
+
+        /* Place Order Button */
+        .place-order-btn {
+            width: 100%; padding: 20px;
+            background: var(--primary);
+            color: white; border: none;
+            border-radius: 20px; font-size: 18px; font-weight: 600;
+            cursor: pointer; transition: 0.4s;
+            box-shadow: 0 10px 30px rgba(230, 57, 70, 0.3);
+        }
+
+        .place-order-btn:hover {
+            background: #c92a37;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(230, 57, 70, 0.4);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="checkout-wrapper">
+        <h2>Review & Pay</h2>
+
+        <div class="bill-card">
+            <div id="items-list"></div>
+            <div class="bill-row" style="margin-top: 10px;">
+                <span>Delivery Fee</span>
+                <span style="color: #4ade80;">FREE</span>
+            </div>
+            <div class="total-row">
+                <span>To Pay</span>
+                <span>₹<span id="final-amount">0</span></span>
+            </div>
+        </div>
+
+        <div class="payment-methods">
+            <label>
+                <input type="radio" name="payment" value="COD" checked>
+                <div class="method-card">
+                    <div class="icon-circle">💵</div>
+                    <div>
+                        <div style="font-weight: 600;">Cash on Delivery</div>
+                        <small style="color: #777;">Pay when you receive</small>
+                    </div>
+                </div>
+            </label>
+
+            <label>
+                <input type="radio" name="payment" value="UPI">
+                <div class="method-card">
+                    <div class="icon-circle">📱</div>
+                    <div>
+                        <div style="font-weight: 600;">Online UPI</div>
+                        <small style="color: #777;">GPay, PhonePe, Paytm</small>
+                    </div>
+                </div>
+            </label>
+
+            <label>
+                <input type="radio" name="payment" value="Card">
+                <div class="method-card">
+                    <div class="icon-circle">💳</div>
+                    <div>
+                        <div style="font-weight: 600;">Credit / Debit Card</div>
+                        <small style="color: #777;">Secure payment gateway</small>
+                    </div>
+                </div>
+            </label>
+        </div>
+
+        <button class="place-order-btn" onclick="finishOrder()">🚀 Place Order Now</button>
+    </div>
+
+    <script>
+        const cart = JSON.parse(localStorage.getItem('userCart')) || [];
+        const total = cart.reduce((s, i) => s + (i.price * i.qty), 0);
+        
+        document.getElementById('final-amount').innerText = total;
+        
+        const listArea = document.getElementById('items-list');
+        listArea.innerHTML = cart.slice(0, 3).map(i => `
+            <div class="bill-row">
+                <span>${i.name} (x${i.qty})</span>
+                <span>₹${i.price * i.qty}</span>
+            </div>
+        `).join('') + (cart.length > 3 ? `<div class="bill-row"><span>& ${cart.length - 3} more items...</span></div>` : '');
+
+        function finishOrder() {
+            if (cart.length === 0) return alert("Your cart is empty!");
+
+            const selectedMethod = document.querySelector('input[name="payment"]:checked').value;
+
+            const order = {
+                id: "#YUM" + Math.floor(1000 + Math.random() * 9000),
+                date: new Date().toLocaleString(),
+                total: total,
+                items: cart.map(i => i.name).join(', '),
+                method: selectedMethod
+            };
+
+            let history = JSON.parse(localStorage.getItem('orderHistory')) || [];
+            history.unshift(order);
+            localStorage.setItem('orderHistory', JSON.stringify(history));
+
+            localStorage.removeItem('userCart');
+            
+            // Yahan aap success page par bhej sakte hain
+            alert("Ordering via " + selectedMethod + "...");
+            window.location.href = 'order-success.html'; 
+        }
+    </script>
+</body>
+</html>
