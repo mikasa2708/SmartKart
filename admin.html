@@ -1,0 +1,31 @@
+<div class="admin-container glass">
+    <h2>Admin Control Panel</h2>
+    
+    <div class="admin-grid">
+        <section class="admin-card">
+            <h3>Update Dish Details</h3>
+            <form id="update-menu-form">
+                <input type="text" placeholder="Dish Name (e.g. Burger)" required>
+                <input type="number" placeholder="New Price (₹)" required>
+                <input type="file" accept="image/*">
+                <button type="submit" class="btn-update">Update Menu</button>
+            </form>
+        </section>
+
+        <section class="admin-card">
+            <h3>Recent Orders</h3>
+            <table>
+                <tr>
+                    <th>Order ID</th>
+                    <th>Item</th>
+                    <th>Status</th>
+                </tr>
+                <tr>
+                    <td>#1024</td>
+                    <td>Veg Pizza</td>
+                    <td class="status-pending">Pending</td>
+                </tr>
+            </table>
+        </section>
+    </div>
+</div>
